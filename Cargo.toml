@@ -1,0 +1,22 @@
+[package]
+name = "ldtk_map"
+version = "0.5.0"
+edition = "2021"
+description = "A crate for reading the ldtk map into a more user-friendly (*read opinionated*) data structure for usage in game."
+authors = ["Benjamin Lloyd"]
+readme = "./README.md"
+categories = ["data-structures", "game-development", "parser-implementations"]
+license = "MIT"
+exclude = [
+    "tests/",
+    "maps",
+]
+
+[badges]
+codecov = { repository = "...", branch = "master", service = "github" }
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = {version = "1.0", features = ["derive"]}
+serde_json = "1.0"
