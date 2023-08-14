@@ -36,7 +36,7 @@ fn main() {
 
 ## Assumptions About Your Game (How to use the library)
 - Entity data is stored outside of the LDtk file except for the name of the entity
-- Layers all use the same pixel size
+- Layers all use the same pixel size for the tileset
 - Once your LDtk file is loaded it will be not loaded again for the lifetime of the program.
 - You will manage the connections between the levels. (thinking of a solution to this)
 - You will follow this map format:
