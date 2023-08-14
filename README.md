@@ -2,12 +2,15 @@
 ![maintenance-status](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 [![codecov](https://codecov.io/github/benlloyd50/ldtk_map/branch/master/graph/badge.svg?token=LIAEO385H6)](https://codecov.io/github/benlloyd50/ldtk_map)
 
-A crate for reading the ldtk map into a more user-friendly (*read opinionated*) data structure for usage in game.
+A crate for reading the LDtk v1.3.3. maps into a more user-friendly (*read opinionated*) data structure for usage in game.
 
-LDtk maps take in and carry a lot of data that the __developer__ will probably not be interested in.
-The crate implements the structs for the ldtk map but abstracts them behind a DesignMap that contains the minimal amount of data.
+## What is this crate
+LDtk maps contain a lot of data that the __developer__ is not interested in.
+This crate implements the structs for the LDtk map but abstracts them behind a DesignMap that contains the minimal amount of data necessary.
+The goal of this crate is to provide a simple interface into working with LDtk files.
+This crate is not trying to give you access to every field on your LDtk file, there are many existing crates for this.
 
-## Installation
+## Add To Your Project
 **`Cargo.toml`**
 
 ```toml
@@ -17,46 +20,33 @@ ldtk_map = { version = "0.1.0" }
 ## Examples
 The public facing of `DesignMap` and child structs aims to be as simple as possible:
 ```rust
-struct DesignMap {
-    levels: HashMap<String, DesignLevel>,
-}
+use ldtk_map::prelude::*;
 
-struct DesignLevel {
-    level: Vec<TileContents>,
-    width: usize,
-    height: usize,
-    grid_size: usize,
-    tileset_name: String,
-}
+fn main() {
+    // Replace with your ldtk file!
+    let my_design = DesignMap::load("../tests/testmaps/two_tileatlases.ldtk");
 
-struct TileContents {
-    atlas_index: usize,
-    entity_name: Option<String>,
+    // Get some info about your tile in Level_0 at (0, 0)
+    my_design.levels().get("Level_0").unwrap().level()[0].atlas_index();
+
+    // Use in your game by reading to your own map data struct
+    convert_to_games_map(&my_design);
 }
 ```
-**NOTE**: All these fields should be accessed via their getters in order to preserve the immutability.
 
 ## Assumptions About Your Game (How to use the library)
-These 3 structs provide enough control to utilize in your game a few things. 
-- `atlas_index` - an index into your texture atlas that is the same as the one used in LDtk.
-- `entity_name` - optional, stringly-typed name that can be used to load from an entity database that is hashable by this name.
-- `grid_size` - another slightly tricky variable as every layer must share their pixel size and this may be changed in the future.
-
-The levels HashMap contains all of your levels loaded by their name in game. 
-Once your LDtk file is loaded it will be not loaded again for the lifetime of the program.
+- Entity data is stored outside of the LDtk file except for the name of the entity
+- Layers all use the same pixel size
+- Once your LDtk file is loaded it will be not loaded again for the lifetime of the program.
+- You will manage the connections between the levels. (thinking of a solution to this)
+- You will follow this map format:
 
 ### LDtk Map Formatting
 The map must be formatted using the guidelines or else it will not be loaded into `DesignMap` properly.
 1. Use only 1 world and place free form levels in the world.
-2. You are responsible for managing the connections between the levels. (thinking of a solution to this)
-3. The "Ground" layer must always be defined in your project as it used for each level to get the following values from: `width`, `height`, `grid_size`, and `tileset_name`
-4. Entities must be placed on an "Entities" layer
+2. The "Ground" layer must always be defined in your project as it used for each level to get the following values from: `width`, `height`, `grid_size`, and `tileset_name`
+3. Entities must be placed on an "Entities" layer
 
-\* Meaningful in the sense that it will be one of two layers actually being read.
-
-
-
-
-
-
-
+## Contributing and Issues
+Everyone is more than welcome to submit feature requests and bug fixes.
+I will comb through these as frequently as possible and try to handle them accordingly.
