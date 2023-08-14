@@ -9,17 +9,16 @@ use crate::{
 /// of the map made in ldtk but formatted in a way to be extremely simple
 /// when used in game
 pub struct DesignMap {
-    pub levels: HashMap<String, DesignLevel>,
-
+    levels: HashMap<String, DesignLevel>,
     tilesets: HashMap<usize, String>,
 }
 
 pub struct DesignLevel {
-    pub level: Vec<TileContents>,
-    pub width: usize,
-    pub height: usize,
-    pub grid_size_px: usize,
-    pub tileset_name: String,
+    level: Vec<TileContents>,
+    width: usize,
+    height: usize,
+    grid_size_px: usize,
+    tileset_name: String,
 }
 
 impl DesignLevel {
@@ -32,12 +31,42 @@ impl DesignLevel {
             tileset_name: "Unset".to_string(),
         }
     }
+
+    pub fn level(&self) -> &[TileContents] {
+        self.level.as_ref()
+    }
+
+    pub fn width(&self) -> usize {
+        self.width
+    }
+
+    pub fn height(&self) -> usize {
+        self.height
+    }
+
+    pub fn grid_size_px(&self) -> usize {
+        self.grid_size_px
+    }
+
+    pub fn tileset_name(&self) -> &str {
+        self.tileset_name.as_ref()
+    }
 }
 
 #[derive(Clone, Default)]
 pub struct TileContents {
-    pub atlas_index: usize,
-    pub entity_name: Option<String>, // simply the name of the entity as the defs are stored in a raw file
+    atlas_index: usize,
+    entity_name: Option<String>, // simply the name of the entity as the defs are stored in a raw file
+}
+
+impl TileContents {
+    pub fn atlas_index(&self) -> usize {
+        self.atlas_index
+    }
+
+    pub fn entity_name(&self) -> Option<&String> {
+        self.entity_name.as_ref()
+    }
 }
 
 impl DesignMap {
@@ -46,6 +75,10 @@ impl DesignMap {
             levels: HashMap::new(),
             tilesets: HashMap::new(),
         }
+    }
+
+    pub fn levels(&self) -> &HashMap<String, DesignLevel> {
+        &self.levels
     }
 
     /// Loads the ldtk file located at path and creates a game-friendly DesignMap
