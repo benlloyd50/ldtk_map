@@ -1,4 +1,6 @@
 # ldtk_map
+![maintenance-status](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
+
 A crate for reading the ldtk map into a more user-friendly (*read opinionated*) data structure for usage in game.
 
 LDtk maps take in and carry a lot of data that the __developer__ will probably not be interested in.
