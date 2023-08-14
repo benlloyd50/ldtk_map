@@ -2,14 +2,16 @@ use std::collections::HashMap;
 
 use crate::{
     ldtk_helpers::{get_raw_world, gridpx_to_idx, src_to_atlas_index},
-    ldtk_structs::Level,
+    ldtk_structs::{Level, LDtk},
 };
 
-/// The friendly, opiniated game map file. contains the raw data
+/// The friendly, opiniated game map file. Contains the raw data
 /// of the map made in ldtk but formatted in a way to be extremely simple
 /// when used in game
 pub struct DesignMap {
     pub levels: HashMap<String, DesignLevel>,
+
+    tilesets: HashMap<usize, String>,
 }
 
 pub struct DesignLevel {
@@ -42,13 +44,17 @@ impl DesignMap {
     pub fn empty() -> Self {
         Self {
             levels: HashMap::new(),
+            tilesets: HashMap::new(),
         }
     }
 
     /// Loads the ldtk file located at path and creates a game-friendly DesignMap
     pub fn new(path: String) -> Self {
         let ldtk_world = get_raw_world(path);
+
         let mut design_map = DesignMap::empty();
+        design_map.tilesets = tilesets(&ldtk_world);
+
         for level in ldtk_world.levels.iter() {
             design_map.load_level(&level);
         }
@@ -60,7 +66,6 @@ impl DesignMap {
         let level_name = &level.identifier;
         let mut new_design_level = DesignLevel::empty();
 
-
         if let Some(layer) = level
             .layer_instances
             .iter()
@@ -70,19 +75,32 @@ impl DesignMap {
             new_design_level.width = layer.width;
             new_design_level.height = layer.height;
             new_design_level.grid_size_px = layer.grid_size;
-            new_design_level.level = vec![TileContents::default(); new_design_level.width * new_design_level.height];
+            new_design_level.level =
+                vec![TileContents::default(); new_design_level.width * new_design_level.height];
+            let tileset_id = layer.tileset_def_uid.unwrap();
+            new_design_level.tileset_name = match self.tilesets.get(&tileset_id) {
+                Some(val) => val.to_string(),
+                None => panic!("Tileset ID: {} was not found in tileset collections.", tileset_id)
+            };
+
             let grid_size = layer.grid_size;
 
             // Since we should have matched on the "Ground" layer we have high confidence we will have a gridTiles vec full of data
             if let Some(tiles) = &layer.grid_tiles {
                 for tile in tiles.iter() {
-                    let tile_index = gridpx_to_idx((tile.grid_x() / grid_size, tile.grid_y() / grid_size), new_design_level.width);
+                    let tile_index = gridpx_to_idx(
+                        (tile.grid_x() / grid_size, tile.grid_y() / grid_size),
+                        new_design_level.width,
+                    );
                     new_design_level.level[tile_index].atlas_index =
                         src_to_atlas_index((tile.src_x(), tile.src_y()));
                 }
             }
         } else {
-            panic!("Did not add a \"Ground\" layer to the level: {}", level_name);
+            panic!(
+                "Did not add a \"Ground\" layer to the level: {}",
+                level_name
+            );
         }
 
         if let Some(layer) = level
@@ -101,13 +119,18 @@ impl DesignMap {
             }
         }
 
-        if let Some(_) = self
-            .levels
-            .insert(level_name.to_string(), new_design_level)
-        {
+        if let Some(_) = self.levels.insert(level_name.to_string(), new_design_level) {
             panic!("{} level already existed, will be overwritten and is undesired behavior. Please consult the ldtk file.", level_name)
         }
     }
+
+}
+
+/// Creates the connection of tileset ids to their names
+fn tilesets(data: &LDtk) -> HashMap<usize, String> {
+    let tileset_names: Vec<(usize, String)> = data.defs.tilesets.iter().map(|tileset| (tileset.uid, tileset.identifier.clone())).collect();
+    let tilesets: HashMap<usize, String> = tileset_names.into_iter().collect();
+    tilesets 
 }
 
 #[cfg(test)]
@@ -131,14 +154,20 @@ mod tests {
     #[test]
     fn test_load_world_with_entities() {
         let world = DesignMap::new("./tests/testmaps/entities.ldtk".to_string());
-        assert_eq!(world.levels[&"Level_0".to_string()].level[0].entity_name, Some("Monster1".to_string()));
-        assert_eq!(world.levels[&"Level_0".to_string()].level[3].entity_name, Some("Monster1".to_string()));
+        assert_eq!(
+            world.levels[&"Level_0".to_string()].level[0].entity_name,
+            Some("Monster1".to_string())
+        );
+        assert_eq!(
+            world.levels[&"Level_0".to_string()].level[3].entity_name,
+            Some("Monster1".to_string())
+        );
     }
 
     #[test]
     fn test_load_levels_with_different_tilesets() {
         let world = DesignMap::new("./tests/testmaps/two_tileatlases.ldtk".to_string());
-
-
+        assert_eq!(world.levels[&"Level_0".to_string()].tileset_name, "Forest".to_string());
+        assert_eq!(world.levels[&"Level_1".to_string()].tileset_name, "SecondTileset".to_string());
     }
 }

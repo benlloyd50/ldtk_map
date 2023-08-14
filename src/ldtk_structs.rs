@@ -35,7 +35,7 @@ pub struct LDtk {
     pub(crate) tutorial_desc: Option<serde_json::Value>,
     pub(crate) custom_commands: Option<Vec<Option<serde_json::Value>>>,
     pub(crate) flags: Option<Vec<Option<serde_json::Value>>>,
-    pub(crate) defs: Option<Defs>,
+    pub(crate) defs: Defs,
     pub(crate) levels: Vec<Level>,
     pub(crate) worlds: Option<Vec<Option<serde_json::Value>>>,
     pub(crate) dummy_world_iid: Option<String>,
@@ -46,7 +46,7 @@ pub struct LDtk {
 pub struct Defs {
     pub(crate) layers: Option<Vec<Layer>>,
     pub(crate) entities: Option<Vec<Entity>>,
-    pub(crate) tilesets: Option<Vec<Tileset>>,
+    pub(crate) tilesets: Vec<Tileset>,
     pub(crate) enums: Option<Vec<Option<serde_json::Value>>>,
     pub(crate) external_enums: Option<Vec<Option<serde_json::Value>>>,
     pub(crate) level_fields: Option<Vec<Option<serde_json::Value>>>,
@@ -140,8 +140,8 @@ pub struct Tileset {
     pub(crate) c_wid: Option<i64>,
     #[serde(rename = "__cHei")]
     pub(crate) c_hei: Option<i64>,
-    pub(crate) identifier: Option<String>,
-    pub(crate) uid: Option<i64>,
+    pub(crate) identifier: String,
+    pub(crate) uid: usize,
     pub(crate) rel_path: Option<String>,
     pub(crate) embed_atlas: Option<String>,
     pub(crate) px_wid: Option<i64>,
@@ -228,7 +228,7 @@ pub struct LayerInstance {
     #[serde(rename = "__pxTotalOffsetY")]
     pub(crate) px_total_offset_y: Option<i64>,
     #[serde(rename = "__tilesetDefUid")]
-    pub(crate) tileset_def_uid: Option<i64>,
+    pub(crate) tileset_def_uid: Option<usize>,
     #[serde(rename = "__tilesetRelPath")]
     pub(crate) tileset_rel_path: Option<String>,
     pub(crate) iid: Option<String>,

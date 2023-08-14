@@ -1,19 +1,24 @@
 [package]
 name = "ldtk_map"
-version = "0.5.0"
+version = "0.1.0"
 edition = "2021"
 description = "A crate for reading the ldtk map into a more user-friendly (*read opinionated*) data structure for usage in game."
 authors = ["Benjamin Lloyd"]
 readme = "./README.md"
+keywords = ["ldtk", "level design"]
 categories = ["data-structures", "game-development", "parser-implementations"]
 license = "MIT"
+license-file = "./LICENSE"
+repository = "https://github.com/benlloyd50/ldtk_map/"
 exclude = [
     "tests/",
     "maps",
 ]
 
 [badges]
-codecov = { repository = "...", branch = "master", service = "github" }
+codecov = { repository = "https://github.com/benlloyd50/ldtk_map/", branch = "master", service = "github" }
+maintenance = { status = "actively-developed" }
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
