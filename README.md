@@ -14,7 +14,7 @@ This crate is not trying to give you access to every field on your LDtk file, th
 **`Cargo.toml`**
 
 ```toml
-ldtk_map = { version = "0.1.0" }
+ldtk_map = { version = "0.2.0" }
 ```
 
 ## Examples
