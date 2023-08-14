@@ -113,7 +113,8 @@ impl DesignMap {
 
         if let Some(layer) = level
             .layer_instances
-            .iter().find(|layer| layer.identifier.eq(&"Ground".to_string()))
+            .iter()
+            .find(|layer| layer.identifier.eq(&"Ground".to_string()))
         {
             new_design_level.width = layer.width;
             new_design_level.height = layer.height;
@@ -139,8 +140,10 @@ impl DesignMap {
                         (tile.grid_x() / grid_size, tile.grid_y() / grid_size),
                         new_design_level.width,
                     );
-                    new_design_level.level[tile_index].atlas_index =
-                        src_to_atlas_index((tile.src_x(), tile.src_y()), new_design_level.grid_size_px());
+                    new_design_level.level[tile_index].atlas_index = src_to_atlas_index(
+                        (tile.src_x(), tile.src_y()),
+                        new_design_level.grid_size_px(),
+                    );
                 }
             }
         } else {
@@ -152,7 +155,8 @@ impl DesignMap {
 
         if let Some(layer) = level
             .layer_instances
-            .iter().find(|layer| layer.identifier.eq(&"Entities".to_string()))
+            .iter()
+            .find(|layer| layer.identifier.eq(&"Entities".to_string()))
         {
             // Since we should have matched on the "Entities" layer we have high confidence we will have a Entities vec full of data
             if let Some(entities) = &layer.entity_instances {
@@ -164,7 +168,11 @@ impl DesignMap {
             }
         }
 
-        if self.levels.insert(level_name.to_string(), new_design_level).is_some() {
+        if self
+            .levels
+            .insert(level_name.to_string(), new_design_level)
+            .is_some()
+        {
             panic!("{} level already existed, will be overwritten and is undesired behavior. Please consult the ldtk file.", level_name)
         }
     }

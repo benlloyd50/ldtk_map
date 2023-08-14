@@ -28,7 +28,7 @@ pub(crate) fn src_to_atlas_index((x, y): (usize, usize), px_size: usize) -> usiz
 
 #[cfg(test)]
 mod tests {
-    use super::{gridpx_to_idx, src_to_atlas_index, get_raw_world};
+    use super::{get_raw_world, gridpx_to_idx, src_to_atlas_index};
 
     #[test]
     #[should_panic]
