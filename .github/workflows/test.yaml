@@ -16,7 +16,6 @@ jobs:
 
       - name: Test
         run: |
-          cd ldtk_map 
           cargo check
           cargo test --all          
 
