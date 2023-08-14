@@ -8,6 +8,7 @@ use crate::{
 /// The friendly, opiniated game map file. Contains the raw data
 /// of the map made in ldtk but formatted in a way to be extremely simple
 /// when used in game
+#[derive(Debug, Default)]
 pub struct DesignMap {
     levels: HashMap<String, DesignLevel>,
     tilesets: HashMap<usize, String>,
@@ -15,6 +16,7 @@ pub struct DesignMap {
 
 /// Represents a single level designed in LDtk, contains the minimal
 /// amount of data necessary to rebuild levels in game.
+#[derive(Debug)]
 pub struct DesignLevel {
     level: Vec<TileContents>,
     width: usize,
@@ -61,7 +63,7 @@ impl DesignLevel {
 }
 
 /// Represents a single tile in a LDtk level
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct TileContents {
     atlas_index: usize,
     entity_name: Option<String>, // simply the name of the entity as the defs are stored in a raw file
@@ -80,7 +82,7 @@ impl TileContents {
 }
 
 impl DesignMap {
-    fn empty() -> Self {
+    fn new() -> Self {
         Self {
             levels: HashMap::new(),
             tilesets: HashMap::new(),
@@ -96,7 +98,7 @@ impl DesignMap {
     pub fn load(path: impl ToString) -> Self {
         let ldtk_world = get_raw_world(path.to_string());
 
-        let mut design_map = DesignMap::empty();
+        let mut design_map = DesignMap::new();
         design_map.tilesets = tilesets(&ldtk_world);
 
         for level in ldtk_world.levels.iter() {
