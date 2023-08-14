@@ -31,6 +31,7 @@ struct TileContents {
     entity_name: Option<String>,
 }
 ```
+**NOTE**: All these fields should be accessed via their getters in order to preserve the immutability.
 
 ## Assumptions About Your Game (How to use the library)
 These 3 structs provide enough control to utilize in your game a few things. 
@@ -39,7 +40,7 @@ These 3 structs provide enough control to utilize in your game a few things.
 - `grid_size` - another slightly tricky variable as every layer must share their pixel size and this may be changed in the future.
 
 The levels HashMap contains all of your levels loaded by their name in game. 
-This is something I can see as be limiting but it is the current solution I chose.
+Once your LDtk file is loaded it will be not loaded again for the lifetime of the program.
 
 ### LDtk Map Formatting
 The map must be formatted using the guidelines or else it will not be loaded into `DesignMap` properly.
