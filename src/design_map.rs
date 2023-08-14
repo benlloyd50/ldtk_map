@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::{
     ldtk_helpers::{get_raw_world, gridpx_to_idx, src_to_atlas_index},
-    ldtk_structs::{Level, LDtk},
+    ldtk_structs::{LDtk, Level},
 };
 
 /// The friendly, opiniated game map file. Contains the raw data
@@ -80,7 +80,10 @@ impl DesignMap {
             let tileset_id = layer.tileset_def_uid.unwrap();
             new_design_level.tileset_name = match self.tilesets.get(&tileset_id) {
                 Some(val) => val.to_string(),
-                None => panic!("Tileset ID: {} was not found in tileset collections.", tileset_id)
+                None => panic!(
+                    "Tileset ID: {} was not found in tileset collections.",
+                    tileset_id
+                ),
             };
 
             let grid_size = layer.grid_size;
@@ -123,14 +126,18 @@ impl DesignMap {
             panic!("{} level already existed, will be overwritten and is undesired behavior. Please consult the ldtk file.", level_name)
         }
     }
-
 }
 
 /// Creates the connection of tileset ids to their names
 fn tilesets(data: &LDtk) -> HashMap<usize, String> {
-    let tileset_names: Vec<(usize, String)> = data.defs.tilesets.iter().map(|tileset| (tileset.uid, tileset.identifier.clone())).collect();
+    let tileset_names: Vec<(usize, String)> = data
+        .defs
+        .tilesets
+        .iter()
+        .map(|tileset| (tileset.uid, tileset.identifier.clone()))
+        .collect();
     let tilesets: HashMap<usize, String> = tileset_names.into_iter().collect();
-    tilesets 
+    tilesets
 }
 
 #[cfg(test)]
@@ -167,7 +174,13 @@ mod tests {
     #[test]
     fn test_load_levels_with_different_tilesets() {
         let world = DesignMap::new("./tests/testmaps/two_tileatlases.ldtk".to_string());
-        assert_eq!(world.levels[&"Level_0".to_string()].tileset_name, "Forest".to_string());
-        assert_eq!(world.levels[&"Level_1".to_string()].tileset_name, "SecondTileset".to_string());
+        assert_eq!(
+            world.levels[&"Level_0".to_string()].tileset_name,
+            "Forest".to_string()
+        );
+        assert_eq!(
+            world.levels[&"Level_1".to_string()].tileset_name,
+            "SecondTileset".to_string()
+        );
     }
 }
