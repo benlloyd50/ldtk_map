@@ -1,5 +1,6 @@
 # ldtk_map
 ![maintenance-status](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
+[![codecov](https://codecov.io/github/benlloyd50/ldtk_map/branch/master/graph/badge.svg?token=LIAEO385H6)](https://codecov.io/github/benlloyd50/ldtk_map)
 
 A crate for reading the ldtk map into a more user-friendly (*read opinionated*) data structure for usage in game.
 
