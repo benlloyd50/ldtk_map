@@ -56,7 +56,7 @@ impl DesignMap {
         design_map.tilesets = tilesets(&ldtk_world);
 
         for level in ldtk_world.levels.iter() {
-            design_map.load_level(&level);
+            design_map.load_level(level);
         }
 
         design_map
@@ -68,9 +68,7 @@ impl DesignMap {
 
         if let Some(layer) = level
             .layer_instances
-            .iter()
-            .filter(|layer| layer.identifier.eq(&"Ground".to_string()))
-            .next()
+            .iter().find(|layer| layer.identifier.eq(&"Ground".to_string()))
         {
             new_design_level.width = layer.width;
             new_design_level.height = layer.height;
@@ -108,9 +106,7 @@ impl DesignMap {
 
         if let Some(layer) = level
             .layer_instances
-            .iter()
-            .filter(|layer| layer.identifier.eq(&"Entities".to_string()))
-            .next()
+            .iter().find(|layer| layer.identifier.eq(&"Entities".to_string()))
         {
             // Since we should have matched on the "Entities" layer we have high confidence we will have a Entities vec full of data
             if let Some(entities) = &layer.entity_instances {
@@ -122,7 +118,7 @@ impl DesignMap {
             }
         }
 
-        if let Some(_) = self.levels.insert(level_name.to_string(), new_design_level) {
+        if self.levels.insert(level_name.to_string(), new_design_level).is_some() {
             panic!("{} level already existed, will be overwritten and is undesired behavior. Please consult the ldtk file.", level_name)
         }
     }

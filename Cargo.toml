@@ -8,7 +8,6 @@ readme = "./README.md"
 keywords = ["ldtk", "level design"]
 categories = ["data-structures", "game-development", "parser-implementations"]
 license = "MIT"
-license-file = "./LICENSE"
 repository = "https://github.com/benlloyd50/ldtk_map/"
 exclude = [
     "tests/",

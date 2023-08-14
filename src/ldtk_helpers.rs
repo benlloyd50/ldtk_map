@@ -16,25 +16,13 @@ pub(crate) fn get_raw_world(level_path: String) -> LDtk {
 
 /// Converts the gridpx (x, y) into the index in the 1d vec
 pub(crate) fn gridpx_to_idx((x, y): (usize, usize), width: usize) -> usize {
-    match ((width * y) + x).try_into() {
-        Ok(val) => val,
-        Err(e) => panic!(
-            "Failed to convert gridpx ({}, {}) into an index. | {}",
-            x, y, e
-        ),
-    }
+    width * y + x
 }
 
 /// Converts the src (x, y) into the index of an atlas sized 16 x 16, 8 pixel square
 const ATLAS_WIDTH: usize = 16;
 pub(crate) fn src_to_atlas_index((x, y): (usize, usize)) -> usize {
-    match (x / 8 + y / 8 * ATLAS_WIDTH).try_into() {
-        Ok(val) => val,
-        Err(e) => panic!(
-            "Failed to convert gridpx ({}, {}) into an index. | {}",
-            x, y, e
-        ),
-    }
+    x / 8 + y / 8 * ATLAS_WIDTH
 }
 
 #[cfg(test)]
