@@ -35,17 +35,19 @@ fn main() {
 ```
 
 ## Assumptions About Your Game (How to use the library)
-- Entity data is stored outside of the LDtk file except for the name of the entity
+- Entity data is stored outside of the LDtk file except for the name of the entity on the "Entities" layer.
 - Layers all use the same pixel size for the tileset
-- Once your LDtk file is loaded it will be not loaded again for the lifetime of the program.
+- Once your LDtk file is loaded it will be not reloaded for the lifetime of the program.
 - You will manage the connections between the levels. (thinking of a solution to this)
 - You will follow this map format:
 
 ### LDtk Map Formatting
 The map must be formatted using the guidelines or else it will not be loaded into `DesignMap` properly.
 1. Use only 1 world and place free form levels in the world.
-2. The "Ground" layer must always be defined in your project as it used for each level to get the following values from: `width`, `height`, `grid_size`, and `tileset_name`
-3. Entities must be placed on an "Entities" layer
+2. The "Ground" layer must always be defined in your project as it used for each level to get the following values from: `width`, `height`, `grid_size`, and `tileset_name`.
+3. Entities must be placed on an "Entities" layer.
+4. Values may be placed on the "Values" layer.
+5. All layers mentioned must be in each level.
 
 ## Contributing and Issues
 Everyone is more than welcome to submit feature requests and bug fixes.

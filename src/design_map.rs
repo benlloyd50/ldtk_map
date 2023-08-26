@@ -67,6 +67,8 @@ impl DesignLevel {
 pub struct TileContents {
     atlas_index: usize,
     entity_name: Option<String>, // simply the name of the entity as the defs are stored in a raw file
+    entity_tag: Option<String>,
+    value: usize,
 }
 
 impl TileContents {
@@ -75,9 +77,20 @@ impl TileContents {
         self.atlas_index
     }
 
+    /// If the tile is blocked by the contents either, entity or terrain features
+    pub fn value(&self) -> usize {
+        self.value
+    }
+
     /// The name of the entity present in the tile
-    pub fn entity_name(&self) -> Option<&String> {
-        self.entity_name.as_ref()
+    pub fn entity_name(&self) -> Option<&str> {
+        self.entity_name.as_ref().map(|x| x.as_str())
+    }
+
+    /// The tag associated with an entity.
+    /// Currently only supports 1 tag
+    pub fn entity_tag(&self) -> Option<&str> {
+        self.entity_tag.as_ref().map(|x| x.as_str())
     }
 }
 
@@ -166,6 +179,24 @@ impl DesignMap {
                     let tile_index = gridpx_to_idx((entity.grid_x(), entity.grid_y()), layer.width);
                     new_design_level.level[tile_index].entity_name =
                         Some(entity.identifier.clone());
+                    if let Some(tag) = entity.tags.first() {
+                        new_design_level.level[tile_index].entity_tag = Some(tag.to_string());
+                    }
+                }
+            }
+        }
+
+        if let Some(layer) = level
+            .layer_instances
+            .iter()
+            .find(|layer| layer.identifier.eq(&"Values".to_string()))
+        {
+            // Since we should have matched on the "Entities" layer we have high confidence we will have a Entities vec full of data
+            if let Some(integers) = &layer.int_grid_csv {
+                let mut idx = 0;
+                for integer in integers {
+                    new_design_level.level[idx].value = *integer;
+                    idx += 1;
                 }
             }
         }

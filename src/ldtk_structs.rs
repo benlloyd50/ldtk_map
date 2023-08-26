@@ -238,7 +238,7 @@ pub struct LayerInstance {
     pub(crate) px_offset_y: Option<i64>,
     pub(crate) visible: bool,
     pub(crate) optional_rules: Option<Vec<Option<serde_json::Value>>>,
-    pub(crate) int_grid_csv: Option<Vec<Option<serde_json::Value>>>,
+    pub(crate) int_grid_csv: Option<Vec<usize>>,
     pub(crate) auto_layer_tiles: Option<Vec<Option<serde_json::Value>>>,
     pub(crate) seed: Option<i64>,
     pub(crate) override_tileset_uid: Option<serde_json::Value>,
@@ -256,7 +256,7 @@ pub struct EntityInstance {
     #[serde(rename = "__pivot")]
     pub(crate) pivot: Option<Vec<i64>>,
     #[serde(rename = "__tags")]
-    pub(crate) tags: Option<Vec<Option<serde_json::Value>>>,
+    pub(crate) tags: Vec<String>,
     #[serde(rename = "__tile")]
     pub(crate) tile: Option<Tile>,
     #[serde(rename = "__smartColor")]
