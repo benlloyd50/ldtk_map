@@ -12,8 +12,11 @@ In turn the goal of this crate is providing this simple interface when working w
 It should function as a good crate for beginners wanting to make games in rust.
 However, this crate is not trying to give you access to every field on your LDtk file.
 Luckily, some other fine devs made crates that might suit your use case better:
+
 [ldtk](https://crates.io/crates/ldtk) *Note: mind the license*
+
 [ldtk_rust](https://crates.io/crates/ldtk_rust)
+
 [ldtk2](https://crates.io/crates/ldtk2)
 
 
