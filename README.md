@@ -2,19 +2,32 @@
 ![maintenance-status](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 [![codecov](https://codecov.io/github/benlloyd50/ldtk_map/branch/master/graph/badge.svg?token=LIAEO385H6)](https://codecov.io/github/benlloyd50/ldtk_map)
 
-A crate for reading the LDtk v1.3.3. maps into a more user-friendly (*read opinionated*) data structure for usage in game.
+A crate for reading the LDtk v1.3.4 maps into a more user-friendly (*read opinionated*) data structure for usage in game.
 
-## What is this crate
-LDtk maps contain a lot of data that the __developer__ is not interested in.
-This crate implements the structs for the LDtk map but abstracts them behind a DesignMap that contains the minimal amount of data necessary.
-The goal of this crate is to provide a simple interface into working with LDtk files.
-This crate is not trying to give you access to every field on your LDtk file, there are many existing crates for this.
+## What is this crate for?
+LDtk maps contain a lot of data that the __developer__ is probably not going to need to use.
+This crate implements the structs for the LDtk map but abstracts them behind a DesignMap.
+The DesignMap contains only a small amount of that data but it is what I found necessary when building my game.
+In turn the goal of this crate is providing this simple interface when working with this files.
+It should function as a good crate for beginners wanting to make games in rust.
+However, this crate is not trying to give you access to every field on your LDtk file.
+Luckily, some other fine devs made crates that might suit your use case better:
+[ldtk](https://crates.io/crates/ldtk) *Note: mind the license*
+[ldtk_rust](https://crates.io/crates/ldtk_rust)
+[ldtk2](https://crates.io/crates/ldtk2)
+
 
 ## Add To Your Project
 **`Cargo.toml`**
 
 ```toml
 ldtk_map = { version = "0.3.0" }
+```
+
+** or in your cmd line **
+
+```bash
+cargo add ldtk_map
 ```
 
 ## Examples
@@ -37,7 +50,7 @@ fn main() {
 ## Assumptions About Your Game (How to use the library)
 - Entity data is stored outside of the LDtk file except for the name of the entity on the "Entities" layer.
 - Layers all use the same pixel size for the tileset
-- Once your LDtk file is loaded it will be not reloaded for the lifetime of the program.
+- Once your LDtk file is loaded ingame it will be not reloaded for the lifetime of the program.
 - You will manage the connections between the levels. (thinking of a solution to this)
 - You will follow this map format:
 
