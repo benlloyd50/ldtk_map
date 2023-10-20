@@ -69,9 +69,6 @@ pub struct Entity {
     pub(crate) min_height: Option<serde_json::Value>,
     pub(crate) max_height: Option<serde_json::Value>,
     pub(crate) keep_aspect_ratio: Option<bool>,
-    pub(crate) tile_opacity: Option<i64>,
-    pub(crate) fill_opacity: Option<f64>,
-    pub(crate) line_opacity: Option<i64>,
     pub(crate) hollow: Option<bool>,
     pub(crate) color: Option<String>,
     pub(crate) render_mode: Option<String>,
@@ -112,8 +109,6 @@ pub struct Layer {
     pub(crate) grid_size: Option<i64>,
     pub(crate) guide_grid_wid: Option<i64>,
     pub(crate) guide_grid_hei: Option<i64>,
-    pub(crate) display_opacity: Option<i64>,
-    pub(crate) inactive_opacity: Option<f64>,
     pub(crate) hide_in_list: Option<bool>,
     pub(crate) hide_fields_when_inactive: Option<bool>,
     pub(crate) can_select_when_inactive: Option<bool>,
@@ -221,8 +216,6 @@ pub struct LayerInstance {
     pub(crate) height: usize,
     #[serde(rename = "__gridSize")]
     pub(crate) grid_size: usize,
-    #[serde(rename = "__opacity")]
-    pub(crate) opacity: Option<i64>,
     #[serde(rename = "__pxTotalOffsetX")]
     pub(crate) px_total_offset_x: Option<i64>,
     #[serde(rename = "__pxTotalOffsetY")]
