@@ -178,7 +178,6 @@ impl DesignMap {
                 for entity in entities.iter() {
                     let tile_index = gridpx_to_idx((entity.grid_x(), entity.grid_y()), layer.width);
                     let new_name = entity.identifier.replace("_", " ").clone();
-                    println!("{}", new_name);
                     new_design_level.level[tile_index].entity_name = Some(new_name);
                     if let Some(tag) = entity.tags.first() {
                         new_design_level.level[tile_index].entity_tag = Some(tag.to_string());
