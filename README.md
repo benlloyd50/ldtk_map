@@ -24,7 +24,7 @@ Luckily, some other fine devs made crates that might suit your use case better:
 **`Cargo.toml`**
 
 ```toml
-ldtk_map = { version = "0.3.0" }
+ldtk_map = { version = "0.3.1" }
 ```
 
 ** or in your cmd line **
