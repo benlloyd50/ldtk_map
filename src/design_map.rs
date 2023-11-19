@@ -84,13 +84,13 @@ impl TileContents {
 
     /// The name of the entity present in the tile
     pub fn entity_name(&self) -> Option<&str> {
-        self.entity_name.as_ref().map(|x| x.as_str())
+        self.entity_name.as_deref()
     }
 
     /// The tag associated with an entity.
     /// Currently only supports 1 tag
     pub fn entity_tag(&self) -> Option<&str> {
-        self.entity_tag.as_ref().map(|x| x.as_str())
+        self.entity_tag.as_deref()
     }
 }
 
@@ -177,7 +177,7 @@ impl DesignMap {
             if let Some(entities) = &layer.entity_instances {
                 for entity in entities.iter() {
                     let tile_index = gridpx_to_idx((entity.grid_x(), entity.grid_y()), layer.width);
-                    let new_name = entity.identifier.replace("_", " ").clone();
+                    let new_name = entity.identifier.replace('_', " ").clone();
                     new_design_level.level[tile_index].entity_name = Some(new_name);
                     if let Some(tag) = entity.tags.first() {
                         new_design_level.level[tile_index].entity_tag = Some(tag.to_string());
@@ -192,11 +192,9 @@ impl DesignMap {
             .find(|layer| layer.identifier.eq(&"Values".to_string()))
         {
             // Since we should have matched on the "Entities" layer we have high confidence we will have a Entities vec full of data
-            if let Some(integers) = &layer.int_grid_csv {
-                let mut idx = 0;
-                for integer in integers {
-                    new_design_level.level[idx].value = *integer;
-                    idx += 1;
+            if let Some(values) = &layer.int_grid_csv {
+                for (idx, val) in values.iter().enumerate() {
+                    new_design_level.level[idx].value = *val;
                 }
             }
         }
