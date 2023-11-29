@@ -19,6 +19,7 @@ pub struct DesignMap {
 #[derive(Debug)]
 pub struct DesignLevel {
     level: Vec<TileContents>,
+    level_name: String,
     width: usize,
     height: usize,
     grid_size_px: usize,
@@ -29,6 +30,7 @@ impl DesignLevel {
     fn empty() -> Self {
         Self {
             level: vec![],
+            level_name: "Unnamed".to_string(),
             width: 0,
             height: 0,
             grid_size_px: 0,
@@ -94,6 +96,10 @@ impl TileContents {
     }
 }
 
+const GROUND: &str = &"Ground";
+const ENTITIES: &str = &"Entities";
+const VALUES: &str = &"Values";
+
 impl DesignMap {
     fn new() -> Self {
         Self {
@@ -125,11 +131,12 @@ impl DesignMap {
     fn load_level(&mut self, level: &Level) {
         let level_name = &level.identifier;
         let mut new_design_level = DesignLevel::empty();
+        new_design_level.level_name = level.identifier.clone();
 
         if let Some(layer) = level
             .layer_instances
             .iter()
-            .find(|layer| layer.identifier.eq(&"Ground".to_string()))
+            .find(|layer| layer.identifier.eq(GROUND))
         {
             new_design_level.width = layer.width;
             new_design_level.height = layer.height;
@@ -171,7 +178,7 @@ impl DesignMap {
         if let Some(layer) = level
             .layer_instances
             .iter()
-            .find(|layer| layer.identifier.eq(&"Entities".to_string()))
+            .find(|layer| layer.identifier.eq(ENTITIES))
         {
             // Since we should have matched on the "Entities" layer we have high confidence we will have a Entities vec full of data
             if let Some(entities) = &layer.entity_instances {
@@ -189,7 +196,7 @@ impl DesignMap {
         if let Some(layer) = level
             .layer_instances
             .iter()
-            .find(|layer| layer.identifier.eq(&"Values".to_string()))
+            .find(|layer| layer.identifier.eq(VALUES))
         {
             // Since we should have matched on the "Entities" layer we have high confidence we will have a Entities vec full of data
             if let Some(values) = &layer.int_grid_csv {
@@ -211,14 +218,12 @@ impl DesignMap {
 
 /// Creates the connection of tileset ids to their names
 fn tilesets(data: &LDtk) -> HashMap<usize, String> {
-    let tileset_names: Vec<(usize, String)> = data
-        .defs
+    data.defs
         .tilesets
         .iter()
         .map(|tileset| (tileset.uid, tileset.identifier.clone()))
-        .collect();
-    let tilesets: HashMap<usize, String> = tileset_names.into_iter().collect();
-    tilesets
+        .into_iter()
+        .collect()
 }
 
 #[cfg(test)]
