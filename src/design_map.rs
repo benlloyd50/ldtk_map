@@ -24,6 +24,8 @@ pub struct DesignLevel {
     height: usize,
     grid_size_px: usize,
     tileset_name: String,
+    world_x: usize,
+    world_y: usize,
 }
 
 impl DesignLevel {
@@ -35,12 +37,34 @@ impl DesignLevel {
             height: 0,
             grid_size_px: 0,
             tileset_name: "Unset".to_string(),
+            world_x: 0,
+            world_y: 0,
         }
+    }
+
+    /// The x coordinate of the map in the world
+    pub fn world_tile_x(&self) -> usize {
+        self.world_x
+    }
+
+    /// The y coordinate of the map in the world
+    pub fn world_tile_y(&self) -> usize {
+        self.world_y
+    }
+
+    /// The x and y coordinates of the map in the world
+    pub fn world_xy(&self) -> (usize, usize) {
+        (self.world_x, self.world_y)
     }
 
     /// The contents of the level
     pub fn level(&self) -> &[TileContents] {
         self.level.as_ref()
+    }
+
+    /// The name of the level
+    pub fn name(&self) -> &str {
+        self.level_name.as_ref()
     }
 
     /// The width of the level based on the Ground layer
@@ -132,6 +156,8 @@ impl DesignMap {
         let level_name = &level.identifier;
         let mut new_design_level = DesignLevel::empty();
         new_design_level.level_name = level.identifier.clone();
+        new_design_level.world_x = level.world_x / 8;
+        new_design_level.world_y = level.world_y / 8;
 
         if let Some(layer) = level
             .layer_instances
