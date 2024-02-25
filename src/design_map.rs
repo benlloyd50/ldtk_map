@@ -24,8 +24,8 @@ pub struct DesignLevel {
     height: usize,
     grid_size_px: usize,
     tileset_name: String,
-    world_x: usize,
-    world_y: usize,
+    world_x: i64,
+    world_y: i64,
 }
 
 impl DesignLevel {
@@ -43,17 +43,17 @@ impl DesignLevel {
     }
 
     /// The x coordinate of the map in the world
-    pub fn world_tile_x(&self) -> usize {
+    pub fn world_tile_x(&self) -> i64 {
         self.world_x
     }
 
     /// The y coordinate of the map in the world
-    pub fn world_tile_y(&self) -> usize {
+    pub fn world_tile_y(&self) -> i64 {
         self.world_y
     }
 
     /// The x and y coordinates of the map in the world
-    pub fn world_xy(&self) -> (usize, usize) {
+    pub fn world_xy(&self) -> (i64, i64) {
         (self.world_x, self.world_y)
     }
 
